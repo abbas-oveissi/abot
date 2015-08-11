@@ -100,6 +100,13 @@ namespace Abot.Crawler
         /// </summary>
         CrawlResult Crawl(Uri uri, CancellationTokenSource tokenSource);
 
+
+        /// <summary>
+        /// Begins a crawl using the List<uri> param
+        /// </summary>
+        CrawlResult CrawlList(List<Uri> uri);
+
+
         /// <summary>
         /// Dynamic object that can hold any value that needs to be available in the crawl context
         /// </summary>
@@ -287,6 +294,83 @@ namespace Abot.Crawler
 
             return _crawlResult;
         }
+
+
+        /// <summary>
+        /// Begins a synchronous crawl using the List<Uri> param, subscribe to events to process data as it becomes available
+        /// </summary>
+        public virtual CrawlResult CrawlList(List<Uri> uriList)
+        {
+            if (uriList == null)
+                throw new ArgumentNullException("uri");
+
+            _crawlContext.RootUri = uriList[0];
+
+
+            _crawlResult = new CrawlResult();
+            _crawlResult.RootUri = _crawlContext.RootUri;
+            _crawlResult.CrawlContext = _crawlContext;
+            _crawlComplete = false;
+
+            _logger.InfoFormat("About to crawl site [{0}]", uriList[0].AbsoluteUri);
+            PrintConfigValues(_crawlContext.CrawlConfiguration);
+
+            if (_memoryManager != null)
+            {
+                _crawlContext.MemoryUsageBeforeCrawlInMb = _memoryManager.GetCurrentUsageInMb();
+                _logger.InfoFormat("Starting memory usage for site [{0}] is [{1}mb]", uriList[0].AbsoluteUri, _crawlContext.MemoryUsageBeforeCrawlInMb);
+            }
+
+            _crawlContext.CrawlStartDate = DateTime.Now;
+            Stopwatch timer = Stopwatch.StartNew();
+
+            if (_crawlContext.CrawlConfiguration.CrawlTimeoutSeconds > 0)
+            {
+                _timeoutTimer = new Timer(_crawlContext.CrawlConfiguration.CrawlTimeoutSeconds * 1000);
+                _timeoutTimer.Elapsed += HandleCrawlTimeout;
+                _timeoutTimer.Start();
+            }
+
+            try
+            {
+                foreach (Uri tempUri in uriList)
+                {
+                    PageToCrawl rootPage = new PageToCrawl(tempUri) { ParentUri = tempUri, IsInternal = true, IsRoot = true };
+                    if (ShouldSchedulePageLink(rootPage))
+                        _scheduler.Add(rootPage);
+                }
+                VerifyRequiredAvailableMemory();
+                CrawlSite();
+            }
+            catch (Exception e)
+            {
+                _crawlResult.ErrorException = e;
+                _logger.FatalFormat("An error occurred while crawling site [{0}]", uriList[0]);
+                _logger.Fatal(e);
+            }
+            finally
+            {
+                if (_threadManager != null)
+                    _threadManager.Dispose();
+            }
+
+            if (_timeoutTimer != null)
+                _timeoutTimer.Stop();
+
+            timer.Stop();
+
+            if (_memoryManager != null)
+            {
+                _crawlContext.MemoryUsageAfterCrawlInMb = _memoryManager.GetCurrentUsageInMb();
+                _logger.InfoFormat("Ending memory usage for site [{0}] is [{1}mb]", uriList[0].AbsoluteUri, _crawlContext.MemoryUsageAfterCrawlInMb);
+            }
+
+            _crawlResult.Elapsed = timer.Elapsed;
+            _logger.InfoFormat("Crawl complete for site [{0}]: Crawled [{1}] pages in [{2}]", _crawlResult.RootUri.AbsoluteUri, _crawlResult.CrawlContext.CrawledCount, _crawlResult.Elapsed);
+
+            return _crawlResult;
+        }
+
 
         #region Synchronous Events
 

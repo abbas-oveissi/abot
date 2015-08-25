@@ -1,7 +1,10 @@
 ﻿
 using Abot.Crawler;
 using Abot.Poco;
+using HtmlAgilityPack;
 using System;
+using System.Data.Linq;
+using System.Collections.Generic;
 
 namespace Abot.Demo
 {
@@ -10,14 +13,15 @@ namespace Abot.Demo
         static void Main(string[] args)
         {
             log4net.Config.XmlConfigurator.Configure();
-            PrintDisclaimer();
+            //PrintDisclaimer();
 
-            Uri uriToCrawl = GetSiteToCrawl(args);
+            //Uri uriToCrawl = GetSiteToCrawl(args);
 
             IWebCrawler crawler;
+            
 
             //Uncomment only one of the following to see that instance in action
-            crawler = GetDefaultWebCrawler();
+            crawler = new MyWebCraweler(null,null,null,new MadBidScheduler(),null,null,null,null,null);
             //crawler = GetManuallyConfiguredWebCrawler();
             //crawler = GetCustomBehaviorUsingLambdaWebCrawler();
 
@@ -30,7 +34,14 @@ namespace Abot.Demo
 
             //Start the crawl
             //This is a synchronous call
-            CrawlResult result = crawler.Crawl(uriToCrawl);
+            //CrawlResult result = crawler.Crawl(uriToCrawl);
+
+            //List<Uri> list = new List<Uri>();
+            //list.Add(new Uri("http://www.asriran.com"));
+            //list.Add(new Uri("http://www.tabnak.ir"));
+
+            //CrawlResult result = crawler.CrawlList(list);
+            CrawlResult result = crawler.Crawl(new Uri("http://us.madbid.com/show/auction/296072"));
 
             //Now go view the log.txt file that is in the same directory as this executable. It has
             //all the statements that you were trying to read in the console window :).
@@ -39,10 +50,7 @@ namespace Abot.Demo
             PrintDisclaimer();
         }
 
-        private static IWebCrawler GetDefaultWebCrawler()
-        {
-            return new PoliteWebCrawler();
-        }
+     
 
         private static IWebCrawler GetManuallyConfiguredWebCrawler()
         {
@@ -71,7 +79,7 @@ namespace Abot.Demo
 
         private static IWebCrawler GetCustomBehaviorUsingLambdaWebCrawler()
         {
-            IWebCrawler crawler = GetDefaultWebCrawler();
+            IWebCrawler crawler = new PoliteWebCrawler();
 
             //Register a lambda expression that will make Abot not crawl any url that has the word "ghost" in it.
             //For example http://a.com/ghost, would not get crawled if the link were found during the crawl.
@@ -148,6 +156,38 @@ namespace Abot.Demo
 
         static void crawler_ProcessPageCrawlCompleted(object sender, PageCrawlCompletedArgs e)
         {
+            string strPage=e.CrawledPage.Content.Text;
+
+            HtmlNodeCollection aTags = e.CrawledPage.HtmlDocument.DocumentNode.SelectNodes("//h1");
+            string name="";
+            if(aTags!=null&&aTags.Count>0)
+            {
+                name = aTags[0].InnerText;
+
+                Console.WriteLine(name);
+            }
+
+            HtmlNodeCollection aTable = e.CrawledPage.HtmlDocument.DocumentNode.SelectNodes("//table[@id='auction-bidhist']");
+            HtmlNodeCollection aTr = e.CrawledPage.HtmlDocument.DocumentNode.SelectNodes("//table[@id='auction-bidhist']//tr");
+            //int index = strPage.IndexOf("col_half col_last single-product");
+            //int devEnd = strPage.IndexOf("</h1>", index);
+            //string str = strPage.Substring(index, devEnd - index);
+            //str = str.Substring(str.IndexOf("<h1>") + 4);
+
+
+
+
+
+            if (aTr != null && aTr[1].InnerText.IndexOf("No") == -1 )
+            {
+                if( aTr[0].InnerText.IndexOf("Winning")==-1)
+                {
+                    string k = "#";
+
+                }
+            }
+
+            //Console.WriteLine(e.CrawledPage.Content);
             //Process data
         }
 

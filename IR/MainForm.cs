@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,11 +24,18 @@ namespace IR
 
         private void button1_Click(object sender, EventArgs e)
         {
-            progressBar1.Maximum = settings.auction;
-            backgroundWorker.RunWorkerAsync();
-            progressBar1.Value = 0;
-            btnStart.Enabled = false;
-
+            if(!backgroundWorker.IsBusy)
+            {
+                dataGridView1.Rows.Clear();
+                progressBar1.Maximum = settings.auction;
+                backgroundWorker.RunWorkerAsync();
+                progressBar1.Value = 0;
+                btnStart.Enabled = false;
+            }
+            else
+            {
+                MessageBox.Show("لطفا منتظر بمانید", "خطا", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         delegate void SetTextCallback(string name,string seller,string buyer, string url);
@@ -143,6 +151,65 @@ namespace IR
         {
             GraphForm gf = new GraphForm(dataGridView1);
             gf.ShowDialog();
+        }
+
+        private void ذخیرهجدولToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if(saveFileDialog1.ShowDialog()==DialogResult.OK)
+            {
+                DataTable dT = GetDataTableFromDGV(dataGridView1);
+                DataSet dS = new DataSet();
+                dS.Tables.Add(dT);
+                dS.WriteXml(File.OpenWrite(saveFileDialog1.FileName));
+            }
+
+        }
+
+        private DataTable GetDataTableFromDGV(DataGridView dgv)
+        {
+            var dt = new DataTable();
+            foreach (DataGridViewColumn column in dgv.Columns)
+            {
+                if (column.Visible)
+                {
+                    // You could potentially name the column based on the DGV column name (beware of dupes)
+                    // or assign a type based on the data type of the data bound to this DGV column.
+                    dt.Columns.Add();
+                }
+            }
+
+            object[] cellValues = new object[dgv.Columns.Count];
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                for (int i = 0; i < row.Cells.Count; i++)
+                {
+                    cellValues[i] = row.Cells[i].Value;
+                }
+                dt.Rows.Add(cellValues);
+            }
+
+            return dt;
+        }
+
+        private void بازیابیجدولToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                dataGridView1.Rows.Clear();
+                DataSet dS = new DataSet();
+                dS.ReadXml(File.OpenRead(openFileDialog1.FileName));
+                for (int i = 0; i < dS.Tables[0].Rows.Count; i++)
+                {
+                    dataGridView1.Rows.Add(dS.Tables[0].Rows[i].ItemArray.GetValue(0).ToString(),
+                        dS.Tables[0].Rows[i].ItemArray.GetValue(1).ToString(),
+                        dS.Tables[0].Rows[i].ItemArray.GetValue(2).ToString(),
+                        dS.Tables[0].Rows[i].ItemArray.GetValue(3).ToString());
+                }
+            }
+
+
+           
+
         }
 
     }

@@ -39,6 +39,9 @@
             this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.پروندهToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ذخیرهجدولToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.بازیابیجدولToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.تنظیماتToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -51,6 +54,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
@@ -97,15 +102,37 @@
             // پروندهToolStripMenuItem
             // 
             this.پروندهToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ذخیرهجدولToolStripMenuItem,
+            this.بازیابیجدولToolStripMenuItem,
+            this.toolStripSeparator1,
             this.تنظیماتToolStripMenuItem});
             this.پروندهToolStripMenuItem.Name = "پروندهToolStripMenuItem";
             this.پروندهToolStripMenuItem.Size = new System.Drawing.Size(60, 24);
             this.پروندهToolStripMenuItem.Text = "پرونده";
             // 
+            // ذخیرهجدولToolStripMenuItem
+            // 
+            this.ذخیرهجدولToolStripMenuItem.Name = "ذخیرهجدولToolStripMenuItem";
+            this.ذخیرهجدولToolStripMenuItem.Size = new System.Drawing.Size(160, 24);
+            this.ذخیرهجدولToolStripMenuItem.Text = "ذخیره جدول";
+            this.ذخیرهجدولToolStripMenuItem.Click += new System.EventHandler(this.ذخیرهجدولToolStripMenuItem_Click);
+            // 
+            // بازیابیجدولToolStripMenuItem
+            // 
+            this.بازیابیجدولToolStripMenuItem.Name = "بازیابیجدولToolStripMenuItem";
+            this.بازیابیجدولToolStripMenuItem.Size = new System.Drawing.Size(160, 24);
+            this.بازیابیجدولToolStripMenuItem.Text = "بازیابی جدول";
+            this.بازیابیجدولToolStripMenuItem.Click += new System.EventHandler(this.بازیابیجدولToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(157, 6);
+            // 
             // تنظیماتToolStripMenuItem
             // 
             this.تنظیماتToolStripMenuItem.Name = "تنظیماتToolStripMenuItem";
-            this.تنظیماتToolStripMenuItem.Size = new System.Drawing.Size(133, 24);
+            this.تنظیماتToolStripMenuItem.Size = new System.Drawing.Size(160, 24);
             this.تنظیماتToolStripMenuItem.Text = "تنظیمات";
             this.تنظیماتToolStripMenuItem.Click += new System.EventHandler(this.تنظیماتToolStripMenuItem_Click);
             // 
@@ -231,12 +258,16 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(756, 75);
+            this.label4.Location = new System.Drawing.Point(511, 71);
             this.label4.Name = "label4";
             this.label4.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label4.Size = new System.Drawing.Size(205, 17);
+            this.label4.Size = new System.Drawing.Size(453, 17);
             this.label4.TabIndex = 9;
-            this.label4.Text = "تیم توسعه دهنده ( بترتیب الفبا ) :";
+            this.label4.Text = "تیم توسعه دهنده ( بترتیب الفبا ) : عباس اویسی - نازلی بهروزی - مونا جلالی";
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.FileName = "db.xml";
             // 
             // MainForm
             // 
@@ -257,7 +288,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Craweler";
+            this.Text = "ی";
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
@@ -286,6 +317,11 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ToolStripMenuItem ذخیرهجدولToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem بازیابیجدولToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }
 

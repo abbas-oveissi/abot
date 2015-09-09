@@ -113,26 +113,26 @@
             // ذخیرهجدولToolStripMenuItem
             // 
             this.ذخیرهجدولToolStripMenuItem.Name = "ذخیرهجدولToolStripMenuItem";
-            this.ذخیرهجدولToolStripMenuItem.Size = new System.Drawing.Size(160, 24);
+            this.ذخیرهجدولToolStripMenuItem.Size = new System.Drawing.Size(175, 24);
             this.ذخیرهجدولToolStripMenuItem.Text = "ذخیره جدول";
             this.ذخیرهجدولToolStripMenuItem.Click += new System.EventHandler(this.ذخیرهجدولToolStripMenuItem_Click);
             // 
             // بازیابیجدولToolStripMenuItem
             // 
             this.بازیابیجدولToolStripMenuItem.Name = "بازیابیجدولToolStripMenuItem";
-            this.بازیابیجدولToolStripMenuItem.Size = new System.Drawing.Size(160, 24);
+            this.بازیابیجدولToolStripMenuItem.Size = new System.Drawing.Size(175, 24);
             this.بازیابیجدولToolStripMenuItem.Text = "بازیابی جدول";
             this.بازیابیجدولToolStripMenuItem.Click += new System.EventHandler(this.بازیابیجدولToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(157, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(172, 6);
             // 
             // تنظیماتToolStripMenuItem
             // 
             this.تنظیماتToolStripMenuItem.Name = "تنظیماتToolStripMenuItem";
-            this.تنظیماتToolStripMenuItem.Size = new System.Drawing.Size(160, 24);
+            this.تنظیماتToolStripMenuItem.Size = new System.Drawing.Size(175, 24);
             this.تنظیماتToolStripMenuItem.Text = "تنظیمات";
             this.تنظیماتToolStripMenuItem.Click += new System.EventHandler(this.تنظیماتToolStripMenuItem_Click);
             // 
@@ -257,6 +257,7 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(511, 71);
             this.label4.Name = "label4";
